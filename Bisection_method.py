@@ -99,9 +99,3 @@ def TrapKReport():
 def LeadingOneReport():
     return
 
-def main():
-    OneMaxReport('onemax.txt', '1X')
-    return
-
-if __name__ == '__main__':
-    main()
