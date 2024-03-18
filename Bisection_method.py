@@ -56,6 +56,7 @@ class Bisectoion_method:
     
     def MRPS( self ):
         upper = self.upper_bound()
+        average_number_of_evaluations = -1
         if upper == -1:
             return None, None
         
@@ -79,7 +80,7 @@ class Bisectoion_method:
 
 def OneMaxReport(log_file_path, crossover_method, max_evaluations = 100000):
     with open(log_file_path, 'a') as txt_file:
-        txt_file.write(f'\nRunning in {datetime.now()}\n')
+        txt_file.write(f'Running in {datetime.now()}\n')
         objective = 'onemax'
         problem_size = [10, 20, 40, 80, 160]
         crossover_ = crossover_method
