@@ -66,7 +66,7 @@ class Bisectoion_method:
         while (upper - lower) / upper > 0.1 and int((upper + lower) / 2) % 4 == 0:
             num_individuals = int((upper + lower) / 2)
             success, temp_average_number_of_evaluations = self.Check10time(num_individuals)
-            print(f'...Try {num_individuals}', success, ' with ', temp_average_number_of_evaluations, ' individuals')
+            print(f'...Try {num_individuals}', success, ' with ', temp_average_number_of_evaluations, ' evaluations')
             if success:
                 upper = num_individuals
                 average_number_of_evaluations = temp_average_number_of_evaluations
@@ -97,9 +97,35 @@ def OneMaxReport(log_file_path, crossover_method, max_evaluations = 100000):
                     txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{mrps},{average_number_of_evaluations}\n')
     return 
 
-def TrapKReport():
+def TrapKReport(log_file_path, crossover_method, max_evaluations = 100000):
+    with open(log_file_path, 'a') as txt_file:
+        txt_file.write(f'Running in {datetime.now()}\n')
+        objective = 'concatenated_trap_k'
+        problem_size = [10, 20, 40, 80, 160]
+        crossover_ = crossover_method
+        for num_parameters in problem_size:
+            for random_seed in range(0, 100, 10):
+                bisection = Bisectoion_method( random_seed, objective, num_parameters, max_evaluations, crossover_ )
+                mrps, average_number_of_evaluations = bisection.MRPS()
+                if mrps == None:
+                    txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{-1},{-1}\n')
+                else:
+                    txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{mrps},{average_number_of_evaluations}\n')
     return
 
-def LeadingOneReport():
+def LeadingOneReport(log_file_path, crossover_method, max_evaluations = 100000):
+    with open(log_file_path, 'a') as txt_file:
+        txt_file.write(f'Running in {datetime.now()}\n')
+        objective = 'leading_one'
+        problem_size = [10, 20, 40, 80, 160]
+        crossover_ = crossover_method
+        for num_parameters in problem_size:
+            for random_seed in range(0, 100, 10):
+                bisection = Bisectoion_method( random_seed, objective, num_parameters, max_evaluations, crossover_ )
+                mrps, average_number_of_evaluations = bisection.MRPS()
+                if mrps == None:
+                    txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{-1},{-1}\n')
+                else:
+                    txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{mrps},{average_number_of_evaluations}\n')
     return
 

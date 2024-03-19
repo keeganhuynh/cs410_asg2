@@ -1,7 +1,8 @@
 from Bisection_method import OneMaxReport, TrapKReport, LeadingOneReport
 
 def main():
-    OneMaxReport('onemax.txt', '1X')
+    TrapKReport('.txt', '1X')
+    TrapKReport('.txt', 'UX')
     return
 
 if __name__ == '__main__':
