@@ -63,7 +63,7 @@ class Bisectoion_method:
         
         lower = upper / 2
         print(f'\n(2) Calculating MRPS ... ')
-        while (upper - lower) / upper > 0.1 and int((upper + lower) / 2) % 4 == 0:
+        while (upper - lower) / upper > 0.1:
             num_individuals = int((upper + lower) / 2)
             success, temp_average_number_of_evaluations = self.Check10time(num_individuals)
             print(f'...Try {num_individuals}', success, ' with ', temp_average_number_of_evaluations, ' evaluations')
@@ -73,7 +73,7 @@ class Bisectoion_method:
             else:
                 lower = num_individuals
     
-            if upper - lower <= 2:
+            if upper - lower <= 4:
                 break
 
         print(f'Calculation done with {upper} individuals!\n')
@@ -93,6 +93,7 @@ def OneMaxReport(log_file_path, crossover_method, max_evaluations = 100000):
                 mrps, average_number_of_evaluations = bisection.MRPS()
                 if mrps == None:
                     txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{-1},{-1}\n')
+                    return
                 else:
                     txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{mrps},{average_number_of_evaluations}\n')
     return 
@@ -109,6 +110,7 @@ def TrapKReport(log_file_path, crossover_method, max_evaluations = 100000):
                 mrps, average_number_of_evaluations = bisection.MRPS()
                 if mrps == None:
                     txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{-1},{-1}\n')
+                    return
                 else:
                     txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{mrps},{average_number_of_evaluations}\n')
     return
@@ -116,7 +118,7 @@ def TrapKReport(log_file_path, crossover_method, max_evaluations = 100000):
 def LeadingOneReport(log_file_path, crossover_method, max_evaluations = 100000):
     with open(log_file_path, 'a') as txt_file:
         txt_file.write(f'Running in {datetime.now()}\n')
-        objective = 'leading_one'
+        objective = 'LeadingOne'
         problem_size = [10, 20, 40, 80, 160]
         crossover_ = crossover_method
         for num_parameters in problem_size:
@@ -125,6 +127,7 @@ def LeadingOneReport(log_file_path, crossover_method, max_evaluations = 100000):
                 mrps, average_number_of_evaluations = bisection.MRPS()
                 if mrps == None:
                     txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{-1},{-1}\n')
+                    return
                 else:
                     txt_file.write(f'{random_seed},{crossover_method},{num_parameters},{mrps},{average_number_of_evaluations}\n')
     return
