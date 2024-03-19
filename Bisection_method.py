@@ -12,6 +12,7 @@ class Bisectoion_method:
         self.num_parameters = num_parameters
         self.max_evaluations = max_evaluations
         self.crossover = crossover_
+        print(f'\n<-> Start with new bisection with starting seed = {self.seed}, objective = {self.objective}, crossover = {self.crossover}')
     
     def print_result_table(self, mrps, average_number_of_evaluations):
         data = [
@@ -45,18 +46,18 @@ class Bisectoion_method:
         print("(1)The upper bound of population size is being sought.")
         while True:
             print('<-> Try with upper = ', upper, ' individuals')
-            flag, _ = self.Check10time( upper )
+            flag, average_number_of_evaluations = self.Check10time( upper )
             if flag:
                 print('\t ... Success with upper = ', upper, ' individuals')
-                return upper
+                return upper, average_number_of_evaluations
             else:
                 upper *= 2
-            if upper > 2**13:
-                return -1
+            if upper > 2**13+1:
+                print('\t ... Failed with maximum indivisuals = ', upper, ' return -1')
+                return -1, -1
     
     def MRPS( self ):
-        upper = self.upper_bound()
-        average_number_of_evaluations = -1
+        upper, average_number_of_evaluations = self.upper_bound()
         if upper == -1:
             return None, None
         
@@ -65,6 +66,7 @@ class Bisectoion_method:
         while (upper - lower) / upper > 0.1 and int((upper + lower) / 2) % 4 == 0:
             num_individuals = int((upper + lower) / 2)
             success, temp_average_number_of_evaluations = self.Check10time(num_individuals)
+            print(f'...Try {num_individuals}', success, ' with ', temp_average_number_of_evaluations, ' individuals')
             if success:
                 upper = num_individuals
                 average_number_of_evaluations = temp_average_number_of_evaluations
@@ -73,7 +75,8 @@ class Bisectoion_method:
     
             if upper - lower <= 2:
                 break
-        print(f'Calculation done with {num_individuals} individuals!\n')
+
+        print(f'Calculation done with {upper} individuals!\n')
         mrps = upper
         self.print_result_table(mrps, average_number_of_evaluations)
         return mrps, average_number_of_evaluations

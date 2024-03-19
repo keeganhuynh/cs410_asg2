@@ -56,7 +56,7 @@ class genetic_algorithm:
                 
             last_max_fitness = max_fitness
         
-        print("Max fitness: ", max_fitness ,' / ', num_parameters)
+        # print("Max fitness: ", max_fitness ,' / ', num_parameters)
         return -1
 
 
