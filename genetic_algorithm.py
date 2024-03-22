@@ -8,8 +8,15 @@ class genetic_algorithm:
     def initialize_population( self, num_individuals, num_variables ):
         pop = np.random.randint(2, size=(num_individuals, num_variables))
         return pop
+    
+    def convergene_check(self, pop):
+        return all(element == pop[0] for element in pop)
+    
+    def success_check(self, pop, num_parameters):
+        return all(element == num_parameters for element in pop)
+        
 
-    def POPOP( self, objective, num_individuals, num_parameters, max_evaluations, crossover_, convergence_option = False ):
+    def POPOP( self, objective, num_individuals, num_parameters, crossover_ ):
         
         if objective not in ['onemax', 'LeadingOne', 'concatenated_trap_k']:
             raise ValueError("objective must be 'onemax', 'LeadingOne', 'concatenated_trap_k'")
@@ -34,10 +41,8 @@ class genetic_algorithm:
         num_evaluations = num_individuals
         selection_size = num_individuals // 2
         P = pop
-        poor_generation = 0 
-        max_fitness, last_max_fitness = 0, 0
-
-        while num_evaluations < max_evaluations:
+        max_fitness = 0
+        while True:
             O = crossover_(P)
             PO = np.vstack([P, O])
             selected_indices = selection().tournament_selection( PO, objective, selection_size )
@@ -45,18 +50,9 @@ class genetic_algorithm:
             num_evaluations += len(O)
             pop_fitness = np.array([objective(i) for i in P])
             max_fitness = np.max(pop_fitness)
-            
-            if max_fitness == num_parameters:
-                return num_evaluations
-            
-            if convergence_option == True and max_fitness <= last_max_fitness:
-                poor_generation += 1
-                if poor_generation == np.log2(num_individuals):
-                    return -1
-                
-            last_max_fitness = max_fitness
+            if self.convergene_check(pop_fitness) or self.success_check(pop_fitness, num_parameters):
+                return num_evaluations, max_fitness
         
-        # print("Max fitness: ", max_fitness ,' / ', num_parameters)
         return -1
 
 
