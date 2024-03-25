@@ -98,7 +98,7 @@ def OneMaxReport(log_file_path, crossover_method):
     with open(log_file_path, 'a') as txt_file:
         txt_file.write(f'Running in {datetime.now()}\n')
         objective = 'onemax'
-        problem_size = [160]
+        problem_size = [10, 20, 40, 80, 160]
         crossover_ = crossover_method
         for num_parameters in problem_size:
             for random_seed in range(0, 100, 10):
